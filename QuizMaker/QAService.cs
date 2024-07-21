@@ -18,32 +18,56 @@ namespace QuizMaker
         // Adds a question from the input in to the XML file
         public void CreateQuestion(string question, string answer)
         {
-            // Create a XML node
-            XmlDocument xmlDocument = new XmlDocument();
-            XmlNode xmlItemNode = xmlDocument.DocumentElement;
-            XmlNode xmlQuestionNode = xmlDocument.CreateElement("Question");
+            // Create an XML doc instance to read the XML file
+            XmlDocument xmlDocumentRead = new XmlDocument();
+            xmlDocumentRead.Load(filePath);
+            XmlNode xmlRoot = xmlDocumentRead.DocumentElement;
+
+            // Create an XML Item node
+            
+            XmlNode xmlItemNode = xmlDocumentRead.CreateElement("Item");
+            xmlRoot.AppendChild(xmlItemNode);
+            XmlNode xmlQuestionNode = xmlDocumentRead.CreateElement("Question");
             xmlQuestionNode.InnerText = question;
             xmlItemNode.AppendChild(xmlQuestionNode);
-            XmlNode xmlAnswerNode = xmlDocument.CreateElement("Answer");
+            XmlNode xmlAnswerNode = xmlDocumentRead.CreateElement("Answer");
             xmlAnswerNode.InnerText = answer;
             xmlItemNode.AppendChild(xmlAnswerNode);
 
-            // Create a XML doc instance to read the XML file
+            // Add the item to the root
+            xmlRoot.AppendChild(xmlItemNode);
+            xmlDocumentRead.Save(filePath);
+
+
+        }
+
+        public List<XmlNode> ShowQuestions()
+        {
+            // Create an XML doc instance to read the XML file
             XmlDocument xmlDocumentRead = new XmlDocument();
-            xmlDocumentRead.LoadXml(filePath);
+            xmlDocumentRead.Load(filePath);
             XmlNode xmlRoot = xmlDocumentRead.DocumentElement;
 
-
+            // Iterate over all Item nodes
+            int questionCount = 0;
+            List<XmlNode> questionNodeList = new List<XmlNode>();
+            foreach(XmlNode child in xmlRoot.ChildNodes)
+            {
+                Console.WriteLine($"Question number {questionCount} : {child["Question"].InnerText}");
+                Console.WriteLine($"Answer : {child["Answer"].InnerText}");
+                questionNodeList.Add( child );
+                questionCount++;
+            }
+            return questionNodeList;
         }
 
-        public string ShowQuestions()
+        public bool ValidAnswer(int questionIndex, string answer, List<XmlNode> questionNodeList)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool ValidAnswer(string answer)
-        {
-            throw new NotImplementedException();
+            if(answer == questionNodeList[questionIndex]["Answer"].InnerText)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
