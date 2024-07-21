@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Data>	
+	<Item>
+		<Question>What is the capital of France?</Question>
+		<Answer>Paris</Answer>
+	</Item>
+	<Item>
+		<Question>What is the capital of Italy?</Question>
+		<Answer>Rome</Answer>
+	</Item>
+	<Item>
+		<Question>What is the capital of Spain?</Question>
+		<Answer>Madrid</Answer>
+	</Item>
+</Data>
